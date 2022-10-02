@@ -1,14 +1,14 @@
 #!/bin/env bash
 #SBATCH -J csqa_jointlk_train         
-#SBATCH -o log.csqa_jointlk_train.txt        # 屏幕上的输出文件重定向到 test.out
-#SBATCH -e slurm-%j.err                      # 屏幕上的错误输出文件重定向到 slurm-%j.err , %j 会替换成jobid
-#SBATCH -p compute                           # 作业提交的分区为 cpu
-#SBATCH -N 1                                 # 作业申请 1 个节点
-#SBATCH --ntasks-per-node=1                  # 单节点启动的进程数为 1
-#SBATCH --cpus-per-task=4                    # 单任务使用的 CPU 核心数为 4
+#SBATCH -o log.csqa_jointlk_train.txt         # The output file on the screen is redirected to test.out
+#SBATCH -e slurm-%j.err                       # The error output file on the screen is redirected to "slurm-%j.err" , %j will be replaced with "jobid"
+#SBATCH -p compute                            # The partition for job submission is CPU
+#SBATCH -N 1                                  # Job requests 1 node
+#SBATCH --ntasks-per-node=1                   # The number of processes started by a single node is 1
+#SBATCH --cpus-per-task=4                     # The number of CPU cores used by a single task is 4
 #SBATCH --mem=2GB                  
-#SBATCH -t 1-00:00:00                        # 任务运行的最长时间为 1 小时
-#SBATCH --gres=gpu:tesla_v100-sxm2-16gb:1    # 单个节点使用 1 块 GPU 卡
+#SBATCH -t 1-00:00:00                         # The maximum time a task can run is 1 hour
+#SBATCH --gres=gpu:tesla_v100-sxm2-16gb:1     # Single node uses 1 GPU card
 # SBATCH -w gpu24
 
 source ~/.bashrc

@@ -279,19 +279,18 @@ LM_MODEL.cuda(); LM_MODEL.eval()
 print ('loading done')
 
 def get_LM_score(cids, question):
-    cids = cids[:]
-    cids.insert(0, -1) #QAcontext node
-    sents, scores = [], []
+    sents = []
+    qaContext = TOKENIZER.encode(question.lower(), add_special_tokens=True)
+    sents.append(qaContext)
     for cid in cids:
-        if cid==-1:
-            sent = question.lower()
-        else:
-            sent = '{} {}.'.format(question.lower(), ' '.join(id2concept[cid].split('_')))
+        sent = '{} {}.'.format(question.lower(), ' '.join(id2concept[cid].split('_')))
         sent = TOKENIZER.encode(sent, add_special_tokens=True)
         sents.append(sent)
-    n_cids = len(cids)
+    
+    n_cids = len(cids)+1
     cur_idx = 0
     batch_size = 50
+    scores = []
     while cur_idx < n_cids:
         #Prepare batch
         input_ids = sents[cur_idx: cur_idx+batch_size]
@@ -300,7 +299,7 @@ def get_LM_score(cids, question):
             seq += [TOKENIZER.pad_token_id] * (max_len-len(seq))
             input_ids[j] = seq
         input_ids = torch.tensor(input_ids).cuda() #[B, seqlen]
-        mask = (input_ids!=1).long() #[B, seq_len]
+        mask = (input_ids!=TOKENIZER.pad_token_id).long() #[B, seq_len]
         #Get LM score
         with torch.no_grad():
             outputs = LM_MODEL(input_ids, attention_mask=mask, masked_lm_labels=input_ids)
@@ -308,8 +307,8 @@ def get_LM_score(cids, question):
             _scores = list(-loss.detach().cpu().numpy()) #list of float
         scores += _scores
         cur_idx += batch_size
-    assert len(sents) == len(scores) == len(cids)
-    cid2score = OrderedDict(sorted(list(zip(cids, scores)), key=lambda x: -x[1])) #score: from high to low
+    assert len(sents) == len(scores) == len(cids)+1
+    cid2score = OrderedDict(sorted(list(zip([-1]+list(cids), scores)), key=lambda x: -x[1])) #score: from high to low
     return cid2score
 
 def concepts_to_adj_matrices_2hop_all_pair__use_LM__Part1(data):
@@ -504,8 +503,7 @@ def generate_adj_data_from_grounded_concepts__use_LM(grounded_path, cpnet_graph_
         res1 = list(tqdm(p.imap(concepts_to_adj_matrices_2hop_all_pair__use_LM__Part1, qa_data), total=len(qa_data)))
 
     res2 = []
-    for j, _data in enumerate(res1):
-        if j % 100 == 0: print (j)
+    for j, _data in enumerate(tqdm(res1, total=len(res1))):
         res2.append(concepts_to_adj_matrices_2hop_all_pair__use_LM__Part2(_data))
 
     with Pool(num_processes) as p:

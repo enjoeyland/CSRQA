@@ -127,3 +127,17 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+*.pyc
+
+.ipynb_checkpoints
+
+saved*
+
+JointLK/data
+JointLK/logs
+qagnn/data
+
+/data/cpnet
+/data/csqa
+/data/obqa
