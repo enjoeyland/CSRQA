@@ -321,8 +321,8 @@ class JOINT_LM_KG(nn.Module):
                                     node_type_ids, node_scores, adj_lengths, adj,
                                     emb_data=None, cache_output=cache_output,
                                     batch=g_batch.to(node_type_ids.device),
-                                    last_hidden_states=last_hidden_states,
-                                    attention_mask=attention_mask)
+                                    last_hidden_states=last_hidden_states.to(node_type_ids.device),
+                                    attention_mask=attention_mask.to(node_type_ids.device))
         logits = logits.view(bs, nc)
 
         if not detail:

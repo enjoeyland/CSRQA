@@ -51,7 +51,7 @@ for seed in 0; do
   python3 -u eval_jointlk.py --dataset $dataset \
       --mode eval_detail \
       --inhouse True \
-      --load_model_path saved_models/csqa/csqa.model.pt.dev_78.4-test_74.2 \
+      --load_model_path saved_models/csqa/enc-roberta-large__k5__gnndim200__bs64__seed0__20221003_000308_model.pt.13 \
       --encoder $model -k $k --gnn_dim $gnndim -elr $elr -dlr $dlr -bs $bs -mbs $mbs -ebs $ebs --seed $seed \
       --n_epochs $n_epochs --max_epochs_before_stop 10  \
       --train_adj data/${dataset}/graph/train.graph.adj.pk \
@@ -64,3 +64,4 @@ for seed in 0; do
       --save_dir ${save_dir_pref}/${dataset} \
   > logs/test_${dataset}__enc-${model}__${dt}.log.txt
 done
+# --load_model_path saved_models/csqa/csqa.model.pt.dev_78.4-test_74.2 \

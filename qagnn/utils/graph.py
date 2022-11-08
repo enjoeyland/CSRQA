@@ -324,7 +324,7 @@ def concepts_to_adj_matrices_2hop_all_pair__use_LM__Part1(data):
 
 def concepts_to_adj_matrices_2hop_all_pair__use_LM__Part2(data):
     qc_ids, ac_ids, question, extra_nodes = data
-    cid2score = get_LM_score(qc_ids+ac_ids+extra_nodes, question)
+    cid2score = get_LM_score(qc_ids + ac_ids + extra_nodes, question)
     return (qc_ids, ac_ids, question, extra_nodes, cid2score)
 
 def concepts_to_adj_matrices_2hop_all_pair__use_LM__Part3(data):
