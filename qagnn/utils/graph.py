@@ -503,7 +503,7 @@ def generate_adj_data_from_grounded_concepts__use_LM(grounded_path, cpnet_graph_
         res1 = list(tqdm(p.imap(concepts_to_adj_matrices_2hop_all_pair__use_LM__Part1, qa_data), total=len(qa_data)))
 
     res2 = []
-    for j, _data in enumerate(tqdm(res1, total=len(res1))):
+    for _data in tqdm(res1, total=len(res1)):
         res2.append(concepts_to_adj_matrices_2hop_all_pair__use_LM__Part2(_data))
 
     with Pool(num_processes) as p:

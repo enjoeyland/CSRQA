@@ -129,14 +129,17 @@ dmypy.json
 .pyre/
 
 *.pyc
+**/.*.py
 
 .ipynb_checkpoints
 
 saved*
 
-JointLK/data
-JointLK/logs
-qagnn/data
+nohup.out
+**/data
+**/logs
+# qagnn/data
+# myModel/data
 
 /data/cpnet
 /data/csqa
